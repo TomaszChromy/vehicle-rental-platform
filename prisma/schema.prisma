@@ -1,0 +1,204 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// User model
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  firstName String
+  lastName  String
+  phone     String?
+  password  String
+  role      UserRole @default(CLIENT)
+  isActive  Boolean  @default(true)
+
+  // Relations
+  bookings      Booking[]
+  reviews       Review[]
+  subscriptions Subscription[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+enum UserRole {
+  ADMIN
+  MANAGER
+  CLIENT
+}
+
+// Vehicle model
+model Vehicle {
+  id           String      @id @default(cuid())
+  type         VehicleType
+  brand        String
+  model        String
+  year         Int
+  licensePlate String      @unique
+  color        String
+  description  String?
+  pricePerDay  Float
+  isAvailable  Boolean     @default(true)
+  location     String
+
+  // Features (comma-separated for SQLite)
+  features     String?
+  images       String?
+
+  // Relations
+  bookings     Booking[]
+  reviews      Review[]
+
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  @@map("vehicles")
+}
+
+enum VehicleType {
+  CAR
+  BIKE
+  SCOOTER
+}
+
+// Booking model
+model Booking {
+  id          String        @id @default(cuid())
+  userId      String
+  vehicleId   String
+
+  startDate   DateTime
+  endDate     DateTime
+  totalPrice  Float
+  status      BookingStatus @default(PENDING)
+
+  // Pickup and return details
+  pickupLocation  String
+  returnLocation  String?
+  pickupTime      String
+  returnTime      String?
+
+  // Payment
+  paymentStatus   PaymentStatus @default(PENDING)
+  paymentMethod   String?
+
+  // Relations
+  user        User          @relation(fields: [userId], references: [id])
+  vehicle     Vehicle       @relation(fields: [vehicleId], references: [id])
+  payment     Payment?
+
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@map("bookings")
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+// Payment model
+model Payment {
+  id            String        @id @default(cuid())
+  bookingId     String        @unique
+  amount        Float
+  currency      String        @default("PLN")
+  status        PaymentStatus @default(PENDING)
+  method        String
+  stripePaymentId String?
+
+  // Relations
+  booking       Booking       @relation(fields: [bookingId], references: [id])
+
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@map("payments")
+}
+
+// Review model
+model Review {
+  id        String   @id @default(cuid())
+  userId    String
+  vehicleId String
+  rating    Int      // 1-5 stars
+  comment   String?
+
+  // Relations
+  user      User     @relation(fields: [userId], references: [id])
+  vehicle   Vehicle  @relation(fields: [vehicleId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("reviews")
+}
+
+// Subscription Plan model
+model Plan {
+  id          String   @id @default(cuid())
+  name        String
+  price       Float
+  currency    String   @default("PLN")
+  duration    String   // "monthly", "yearly"
+  features    String? // comma-separated for SQLite
+  isActive    Boolean  @default(true)
+
+  // Relations
+  subscriptions Subscription[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("plans")
+}
+
+// Subscription model
+model Subscription {
+  id        String           @id @default(cuid())
+  userId    String
+  planId    String
+  status    SubscriptionStatus @default(ACTIVE)
+  startDate DateTime
+  endDate   DateTime
+
+  // Relations
+  user      User             @relation(fields: [userId], references: [id])
+  plan      Plan             @relation(fields: [planId], references: [id])
+
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  @@map("subscriptions")
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELLED
+  EXPIRED
+}
