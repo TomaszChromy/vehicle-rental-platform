@@ -437,7 +437,7 @@ Ten projekt jest własnością intelektualną Tomasza Chromy.
 
 ---
 
-**Zbudowane z ❤️ przez Tomasza Chromy**
+**[POWERED BY TOMASZ CHROMY](https://tomaszchromy.com)**
 
 *VehicleRent - Profesjonalna platforma wynajmu pojazdów*
 
