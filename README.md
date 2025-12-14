@@ -1,10 +1,16 @@
 # 🚗 VehicleRent - Platforma Wynajmu Pojazdów
 
-**Profesjonalna platforma do wynajmu samochodów, rowerów i hulajnóg** - Nowoczesna aplikacja webowa gotowa do wdrożenia jako produkt komercyjny
+> **Profesjonalna platforma do wynajmu samochodów, rowerów i hulajnóg** - Nowoczesna aplikacja webowa gotowa do wdrożenia jako produkt komercyjny
 
 Zaawansowany, pełnofunkcjonalny system wynajmu pojazdów zbudowany w **Next.js 16** z **React 19**, **TypeScript**, **Prisma** i **PostgreSQL**. Aplikacja oferuje kompletne rozwiązanie dla firm wynajmujących pojazdy, umożliwiając zarządzanie flotą, rezerwacjami i klientami.
 
----
+## 👨‍💻 Autor i Twórca
+
+**Tomasz Chromy** - jedyny twórca i pomysłodawca
+- 🌐 Strona: [tomaszchromy.com](https://tomaszchromy.com)
+- 📧 Email: tomasz.chromy@outlook.com
+
+**Copyright © 2024-2025 Tomasz Chromy. Wszelkie prawa zastrzeżone.**
 
 ## 📸 Zrzuty Ekranu
 
@@ -13,18 +19,6 @@ Zaawansowany, pełnofunkcjonalny system wynajmu pojazdów zbudowany w **Next.js 
 ![VehicleRent - Strona Główna](./public/images/screenshot-home.png)
 
 *Nowoczesny interfejs z formularzem rezerwacji i hero section*
-
----
-
-## 👨‍💻 Autor i Twórca
-
-**Tomasz Chromy** - jedyny twórca i pomysłodawca
-
-- 🌐 Strona: [tomaszchromy.com](https://tomaszchromy.com)
-- 📧 Email: tomasz.chromy@outlook.com
-- 💼 GitHub: [TomaszChromy](https://github.com/TomaszChromy)
-
-**Copyright © 2024-2025 Tomasz Chromy. Wszelkie prawa zastrzeżone.**
 
 ---
 
@@ -56,13 +50,15 @@ Zaawansowany, pełnofunkcjonalny system wynajmu pojazdów zbudowany w **Next.js 
 - **Filtrowanie** - Pokazywanie tylko dostępnych pojazdów
 - **Geolokalizacja** - Znajdź pojazdy w pobliżu
 
-### 🔐 System Użytkowników
+### 🔐 Bezpieczeństwo i Autentykacja
 
-- **Rejestracja i logowanie** - NextAuth.js z JWT
-- **Role użytkowników** - CLIENT, MANAGER, ADMIN
+- **Bezpieczne logowanie** - Hashowanie haseł (bcrypt)
+- **NextAuth.js z JWT** - Nowoczesna autentykacja
+- **Role-based access control** - CLIENT, MANAGER, ADMIN
+- **Session management** - Automatyczne odświeżanie tokenów
+- **Ochrona route'ów** - Middleware dla zabezpieczonych stron
 - **Profil użytkownika** - Edycja danych osobowych
 - **Historia rezerwacji** - Przegląd wszystkich rezerwacji
-- **Zarządzanie kontem** - Zmiana hasła, ustawienia
 
 ### 👨‍💼 Panel Administracyjny
 
@@ -120,6 +116,24 @@ Zaawansowany, pełnofunkcjonalny system wynajmu pojazdów zbudowany w **Next.js 
 - **TypeScript** - Type checking
 - **Prisma Studio** - GUI dla bazy danych
 - **tsx** - TypeScript execution dla seedów
+
+### Bezpieczeństwo
+
+- **Input validation** - Walidacja danych wejściowych
+- **SQL injection protection** - Dzięki Prisma ORM
+- **XSS protection** - Sanityzacja danych
+- **CORS configuration** - Kontrola dostępu cross-origin
+- **Security headers** - Dodatkowe nagłówki bezpieczeństwa
+- **Password hashing** - bcryptjs z salt rounds
+
+### Performance i Optymalizacja
+
+- **Code splitting** - Ładowanie komponentów na żądanie
+- **Image optimization** - Automatyczna optymalizacja obrazów
+- **Caching strategies** - Inteligentne cache'owanie danych
+- **Database indexing** - Optymalizacja zapytań SQL
+- **Lazy loading** - Opóźnione ładowanie komponentów
+- **Turbopack** - Szybszy bundler Next.js 16
 
 ---
 
@@ -282,13 +296,83 @@ vehicle-rental-platform/
 
 ---
 
+## 📁 Szczegółowa Struktura Projektu
+
+```
+vehicle-rental-platform/
+├── docs/                    # Dokumentacja
+│   ├── GOOGLE_MAPS_SETUP.md # Konfiguracja Google Maps
+│   ├── MAPS_SYSTEM.md       # System map
+│   ├── PROJECT_SUMMARY.md   # Podsumowanie projektu
+│   └── USER_SYSTEM.md       # System użytkowników
+├── prisma/                  # Schema bazy danych i seedy
+│   ├── schema.prisma       # Definicja modeli
+│   └── seed.ts             # Dane testowe
+├── public/                  # Pliki statyczne
+│   └── images/             # Zdjęcia pojazdów i screenshoty
+├── src/
+│   ├── app/                # Next.js App Router
+│   │   ├── api/           # API endpoints
+│   │   ├── admin/         # Panel administracyjny
+│   │   ├── auth/          # Autentykacja
+│   │   ├── booking/       # System rezerwacji
+│   │   ├── map/           # Mapa pojazdów
+│   │   └── profile/       # Profil użytkownika
+│   ├── components/         # React components
+│   ├── hooks/             # Custom React hooks
+│   ├── lib/               # Utilities i konfiguracja
+│   ├── styles/            # Style CSS
+│   ├── types/             # TypeScript type definitions
+│   └── utils/             # Funkcje pomocnicze
+├── .env.local             # Zmienne środowiskowe
+├── LICENSE                # Licencja
+├── package.json           # Zależności i skrypty
+├── README.md             # Ten plik
+└── ROADMAP.md            # Plan rozwoju
+```
+
+---
+
+## 🎨 Customization
+
+### Kolory
+
+Paleta kolorów jest zdefiniowana w `tailwind.config.ts`:
+
+```typescript
+colors: {
+  primary: {
+    orange: '#ff6b35',
+    blue: '#0080ff',
+  },
+  dark: {
+    bg: '#0a0a0f',
+    card: '#111827',
+    border: '#374151',
+  },
+}
+```
+
+### Komponenty
+
+Kluczowe komponenty:
+
+- **BookingFlow** - Proces rezerwacji pojazdu
+- **VehicleCard** - Karta pojazdu w katalogu
+- **VehicleMap** - Interaktywna mapa Google Maps
+- **PricingPlans** - Plany cenowe
+- **AdminDashboard** - Panel administracyjny
+
+---
+
 ## 📱 Responsive Design
 
 Aplikacja jest w pełni responsywna z:
 
-- **Mobile**: Zoptymalizowany interfejs dla urządzeń mobilnych
-- **Tablet**: Dostosowany layout dla średnich ekranów
-- **Desktop**: Pełna funkcjonalność dla dużych ekranów
+- **Mobile**: Zoptymalizowany interfejs dla urządzeń mobilnych (< 768px)
+- **Tablet**: Dostosowany layout dla średnich ekranów (768px - 1024px)
+- **Desktop**: Pełna funkcjonalność dla dużych ekranów (> 1024px)
+- **Touch-friendly**: Wszystkie elementy dostosowane do ekranów dotykowych
 
 ---
 
